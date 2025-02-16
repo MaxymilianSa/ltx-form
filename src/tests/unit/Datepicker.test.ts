@@ -74,4 +74,19 @@ describe('DatePicker Component', () => {
     expect(datePicker.props().range).toBe(false)
     expect(datePicker.props().multiCalendars).toBe(false)
   })
+
+  it('should update model value correctly when range prop changes', async () => {
+    const wrapper = mount(DatePicker, {
+      props: { range: false, modelValue: '2025-01-01' },
+    })
+
+    const datePicker = wrapper.findComponent(VueDatePicker)
+    expect(datePicker.props().modelValue).toBe('2025-01-01')
+
+    await wrapper.setProps({ range: true })
+    expect(datePicker.props().modelValue).toEqual(['2025-01-01', ''])
+
+    await wrapper.setProps({ range: false })
+    expect(datePicker.props().modelValue).toBe('2025-01-01')
+  })
 })

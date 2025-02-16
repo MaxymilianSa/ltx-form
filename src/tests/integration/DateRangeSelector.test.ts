@@ -72,4 +72,29 @@ describe('DateRangeSelector Integration', () => {
     expect(datePicker.props().minDate).toBe('2025-01-01')
     expect(datePicker.props().maxDate).toBe('2025-12-31')
   })
+
+  it('should update model and render correctly when changing from date-from to date from-to', async () => {
+    const wrapper = mount(DateRangeSelector, {
+      props: {
+        options,
+        modelValue: { unit: 'date-from', date: '2025-01-01' },
+      },
+    })
+
+    const unitSelector = wrapper.findComponent(UnitSelector)
+    await unitSelector.setValue('date from-to')
+
+    const datePicker = wrapper.findComponent(DatePicker)
+    expect(datePicker.exists()).toBe(true)
+    expect(datePicker.props().range).toBe(true)
+
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
+    const emittedValue = wrapper.emitted('update:modelValue')![0][0] as {
+      unit: string
+      date: [string, string]
+    }
+
+    expect(emittedValue.unit).toBe('date from-to')
+    expect(emittedValue.date).toEqual(['2025-01-01', ''])
+  })
 })

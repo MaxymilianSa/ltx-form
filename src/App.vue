@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import type { DateRangeSelectorProps, DateRangeSelectorValues } from './@types/date-range-selector'
+import type { SingleOption } from './@types/date-range-selector'
 import DateRangeSelector from './components/DateRangeSelector.vue'
 
-const values = ref<DateRangeSelectorValues>({
-  unit: 'year',
-  numeric: 10,
-})
+const values = ref({})
 
-const options: DateRangeSelectorProps['options'] = [
+const options: SingleOption[] = [
   { value: 'date from-to', label: 'Date From - Date To' },
   { value: 'date-from', label: 'Date From' },
   { value: 'date-to', label: 'Date To' },

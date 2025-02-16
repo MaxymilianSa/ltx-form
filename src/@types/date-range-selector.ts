@@ -1,6 +1,6 @@
 export type DateRangeSelectorProps = {
   options: SingleOption[]
-  values?: DateRangeSelectorValues
+  modelValue?: DateRangeSelectorValues
   datePicker?: {
     minDate?: string | Date
     maxDate?: string | Date
