@@ -9,6 +9,7 @@ import type { SingleOption } from '@/@types/date-range-selector'
 describe('DateRangeSelector Integration', () => {
   const options: SingleOption[] = [
     { value: 'year', label: 'Year' },
+    { value: 'hour', label: 'Hour' },
     { value: 'date-from', label: 'Date From' },
     { value: 'date from-to', label: 'Date From-To' },
   ]
@@ -83,6 +84,31 @@ describe('DateRangeSelector Integration', () => {
 
     const unitSelector = wrapper.findComponent(UnitSelector)
     await unitSelector.setValue('date from-to')
+
+    const datePicker = wrapper.findComponent(DatePicker)
+    expect(datePicker.exists()).toBe(true)
+    expect(datePicker.props().range).toBe(true)
+
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
+    const emittedValue = wrapper.emitted('update:modelValue')![0][0] as {
+      unit: string
+      date: [string, string]
+    }
+
+    expect(emittedValue.unit).toBe('date from-to')
+    expect(emittedValue.date).toEqual(['2025-01-01', ''])
+  })
+
+  it('should update model and render correctly when changing from hours to date from-to with initial date as string', async () => {
+    const wrapper = mount(DateRangeSelector, {
+      props: {
+        options,
+        modelValue: { unit: 'hour', date: '2025-01-01' },
+      },
+    })
+
+    const unitSelector = wrapper.findComponent(UnitSelector)
+    await unitSelector.find('select').setValue('date from-to')
 
     const datePicker = wrapper.findComponent(DatePicker)
     expect(datePicker.exists()).toBe(true)
